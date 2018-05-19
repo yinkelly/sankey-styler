@@ -1,0 +1,43 @@
+{
+  "links": [
+    {
+      "source": 0,
+      "target": 1,
+      "value": 10
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "value": 2
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "value": 5
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "value": 12
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "value": 1
+    }
+  ],
+  "nodes": [
+    {
+      "name": "zero"
+    },
+    {
+      "name": "one"
+    },
+    {
+      "name": "two"
+    },
+    {
+      "name": "three"
+    }
+  ]
+}
