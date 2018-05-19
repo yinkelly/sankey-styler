@@ -6,24 +6,10 @@ import AlluvialNode from './AlluvialNode';
 import AlluvialLink from './AlluvialLink';
 
 class Alluvial extends Component {
-  // componentDidMount() {
-  // }
-
-  componentDidUpdate() {
-    console.log('componentDidUpdate');
-  }
-
-  componentWillUnmount() {
-    console.log('componentDidUnmount');
-  }
-
   render() {
     const {
-      width, height, data, margin, nodeWidth, nodePadding, colorScale,
+      width, height, data, margin, nodePadding, colorScale, style
     } = this.props;
-
-    // let formatNumber = d3.format(',.0f'),
-    //   format = function (d) { return `${formatNumber(d)} TWh`; },
 
     const svg = {
       width: width + margin.l + margin.r,
@@ -31,7 +17,7 @@ class Alluvial extends Component {
     };
 
     const d3sankey = sankey()
-      .nodeWidth(nodeWidth)
+      .nodeWidth(style.nodeWidth)
       .nodePadding(nodePadding)
       .extent([[1, 1], [width - 1, height - 6]]);
 
@@ -50,6 +36,12 @@ class Alluvial extends Component {
                 key={node.index}
                 node={node}
                 colorScale={colorScale}
+                style={{
+                  opacity: style.nodeOpacity,
+                  borderColor: style.nodeBorderColor,
+                  borderWidth: style.nodeBorderWidth,
+                  borderRadius: style.nodeBorderRadius
+                }}
               />
             ))}
           </g>
@@ -58,6 +50,10 @@ class Alluvial extends Component {
               <AlluvialLink
                 key={`${link.source.name}-${link.target.name}`}
                 link={link}
+                style={{
+                  opacity: style.linkOpacity,
+                  color: style.linkColor
+                }}
               />))}
           </g>
         </g>
@@ -71,7 +67,6 @@ Alluvial.propTypes = {
   height: PropTypes.number,
   data: PropTypes.object,
   margin: PropTypes.object,
-  nodeWidth: PropTypes.number,
   nodePadding: PropTypes.number,
   colorScale: PropTypes.func,
 };
@@ -82,7 +77,6 @@ Alluvial.defaultProps = {
   margin: {
     l: 10, t: 10, r: 80, b: 10,
   },
-  nodeWidth: 10,
   nodePadding: 10,
   colorScale: scaleOrdinal(schemeCategory10),
 };

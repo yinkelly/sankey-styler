@@ -13,14 +13,7 @@ const styles = {
     leftMost: {
       textAnchor: 'end',
     },
-  },
-  rect: {
-    stroke: 'none',
-    fillOpacity: 0.8,
-    ':hover': {
-      fillOpacity: 1,
-    },
-  },
+  }
 };
 
 class AlluvialNode extends Component {
@@ -55,19 +48,19 @@ class AlluvialNode extends Component {
       .style('opacity', 1);
   }
 
-  // shouldComponentUpdate(nextProps) {
-  // }
-
   componentDidUpdate() {
-    console.log('componentDidUpdate');
-  }
-
-  componentWillUnmount() {
-    console.log('componentDidUnmount');
+    const { node } = this.props;
+    select(this.nodeGroup)
+      .attr('transform', `translate(${node.x0}, ${node.y0})`);
   }
 
   render() {
-    const { node, colorScale, borderRadius } = this.props;
+    const { node, colorScale, style } = this.props;
+    const rectStyle = {
+      stroke: style.borderColor,
+      strokeWidth: style.borderWidth,
+      fillOpacity: style.opacity,
+    }
     return (
       <g
         key={node.index}
@@ -75,12 +68,11 @@ class AlluvialNode extends Component {
       >
         <rect
           ref={element => this.nodeMarker = element}
-          rx={borderRadius}
-          ry={borderRadius}
+          rx={style.borderRadius}
+          ry={style.borderRadius}
           width={node.x1 - node.x0}
           fill={colorScale(node.name).replace(/ .*/, '')}
-          stroke="#000"
-          style={styles.rect}
+          style={rectStyle}
         />
         <text
           ref={element => this.nodeLabel = element}
@@ -97,12 +89,11 @@ class AlluvialNode extends Component {
 AlluvialNode.propTypes = {
   node: PropTypes.object.isRequired,
   colorScale: PropTypes.func,
-  borderRadius: PropTypes.number,
+  style: PropTypes.object,
 };
 
 AlluvialNode.defaultProps = {
   colorScale: scaleOrdinal(schemeCategory10),
-  borderRadius: 3,
 };
 
 export default Radium(AlluvialNode);

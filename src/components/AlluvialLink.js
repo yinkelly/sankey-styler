@@ -7,17 +7,12 @@ import Radium from 'radium';
 const styles = {
   link: {
     fill: 'none',
-    stroke: '#000',
-    strokeOpacity: 0.4,
-    ':hover': {
-      strokeOpacity: 0.6,
-    },
   },
 };
 
 class AlluvialLink extends Component {
   componentDidMount() {
-    const { link } = this.props;
+    const { link, style } = this.props;
     select(this.link)
       .attr('stroke-width', 0)
       .style('stroke-opacity', 0)
@@ -25,17 +20,21 @@ class AlluvialLink extends Component {
       .delay(500)
       .duration(1000)
       .attr('stroke-width', Math.max(1, link.width))
-      .style('stroke-opacity', styles.link.strokeOpacity);
+      .style('stroke-opacity', style.opacity);
   }
 
   render() {
-    const { link } = this.props;
+    const { link, style } = this.props
+    const linkStyle = {
+      stroke: style.color,
+      strokeOpacity: style.opacity,
+    }
     return (
       <path
         key={`${link.source.name}-${link.target.name}`}
         ref={element => this.link = element}
         d={sankeyLinkHorizontal()(link)}
-        style={styles.link}
+        style={[styles.link, linkStyle]}
       />
     );
   }
